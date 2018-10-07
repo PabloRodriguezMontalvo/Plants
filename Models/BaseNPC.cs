@@ -18,5 +18,6 @@ namespace PlantsVsZombies.Models
          int TurnoColocado { get; set; }
          int Coste { get; set; }
 
+         bool RecibirDaño(int daño);
     }
 }

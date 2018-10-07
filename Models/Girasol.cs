@@ -39,5 +39,16 @@ namespace PlantsVsZombies.Models
             _turnoColocado = turno;
 
         }
-    }
+
+        public bool RecibirDaño(int daño)
+        {
+            Vida -= daño;
+            if (Vida > 0)
+                return false;
+            else
+                return true;
+        }
+  
+
+}
 }

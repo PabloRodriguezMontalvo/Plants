@@ -79,6 +79,8 @@ namespace PlantsVsZombies
             var rand = new Random();
 
             Juego.GenerarNPC("Zombie", 0, rand.Next(1, 4));
+
+            Juego.Disparar();
         
 
         }

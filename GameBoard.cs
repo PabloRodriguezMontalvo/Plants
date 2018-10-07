@@ -38,6 +38,26 @@ namespace PlantsVsZombies
             }
             return _soles;
         }
+        public int Disparar()
+        {
+            foreach (Planta item in Tablero.Where(o => o.Tipo == "Planta"))
+            {
+                if (turno != 1)
+                {
+                 var casillas=  item.Disparar();
+                    var zombies = Tablero.Where(o => o.Tipo == "Zombie" && o.Y == item.Y && casillas.Contains(o.X));
+                    foreach (var zombi in zombies)
+                    {
+                       var muerto= zombi.RecibirDaño(item.Daño);
+                        if(muerto)
+                        {
+                            Tablero.Remove(zombi);
+                        }
+                    }
+                }
+            }
+            return _soles;
+        }
         public bool Fin()
         {
             if (countDeaths == 0 || alive == false)

@@ -38,5 +38,27 @@ namespace PlantsVsZombies.Models
             _turnoColocado = turno;
             _frecuencia = frecuencia;
         }
+        public List<int> Disparar()
+        {
+            var casillas_dañadas = new List<int>() ;
+
+            for (int i = _x; i < 8; i++)
+            {
+                casillas_dañadas.Add(i + 1);
+            }
+            return casillas_dañadas;
+        }
+
+      
+        public bool RecibirDaño(int daño)
+        {
+            Vida -= daño;
+            if (Vida > 0)
+                return false;
+            else
+                return true;
+        }
     }
+
+
 }

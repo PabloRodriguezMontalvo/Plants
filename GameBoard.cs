@@ -16,13 +16,14 @@ namespace PlantsVsZombies
         public List<INPC> Tablero = new List<INPC>();
 
 
-        private int countDeaths = 0;
-        private int turno = 1;
-        private int _soles = 50;
+        public int countDeaths = 0;
+        public int turno = 1;
+        public int _soles = 50;
         private float _refresco = 0.2f;
         public GameBoard(int dificultad, float refresco)
     {
             _refresco = refresco;
+            countDeaths = dificultad;
     }
         public int AcumularSol()
         {
@@ -38,27 +39,64 @@ namespace PlantsVsZombies
             }
             return _soles;
         }
-        public int Disparar()
+        public void Disparar()
         {
-            foreach (Planta item in Tablero.Where(o => o.Tipo == "Planta"))
+            var zombiesFueraDelTablero = new List<INPC>();
+            foreach (Planta item in Tablero.Where(o => o.Tipo == "Planta" && turno!=o.TurnoColocado))
             {
                 if (turno != 1)
                 {
                  var casillas=  item.Disparar();
-                    var zombies = Tablero.Where(o => o.Tipo == "Zombie" && o.Y == item.Y && casillas.Contains(o.X));
-                    foreach (var zombi in zombies)
+                    var zombi = Tablero.Where(o => o.Tipo == "Zombie" && o.Y == item.Y && casillas.Contains(o.X)).FirstOrDefault();
+               if(zombi != null)
                     {
                        var muerto= zombi.RecibirDaño(item.Daño);
                         if(muerto)
                         {
-                            Tablero.Remove(zombi);
+                            countDeaths--;
+
+                            zombiesFueraDelTablero.Add(zombi);
                         }
                     }
                 }
             }
-            return _soles;
+            foreach (var item in zombiesFueraDelTablero)
+            {
+                Tablero.Remove(item);
+
+            }
         }
-        public bool Fin()
+        public void MoverEnemigos()
+        {
+            var PlantasFueraDelTablero = new List<INPC>();
+            foreach (Zombie item in Tablero.Where(o => o.Tipo == "Zombie"))
+            {
+                if ((turno - item.TurnoColocado) % 2 == 0)
+                {
+                    var planta = Tablero.Find(o => o.X == item.X - 1);
+                    if (planta == null)
+                        item.X = item.X - item.Movimiento;
+                    else
+                        PlantasFueraDelTablero= AtaqueEnemigo(item, planta);
+                }
+             
+            }
+            foreach (var item in PlantasFueraDelTablero)
+            {
+                Tablero.Remove(item);
+            }
+        }
+        public List<INPC> AtaqueEnemigo(INPC Enemy,INPC Planta)
+        {
+            var PlantasFueraDelTablero = new List<INPC>();
+            Planta.Vida = Planta.Vida - Enemy.Daño;
+            if (Planta.Vida == 0)
+            {
+                PlantasFueraDelTablero.Add(Planta);
+            }
+            return PlantasFueraDelTablero;
+        }
+            public bool Fin()
         {
             if (countDeaths == 0 || alive == false)
                 return true;
@@ -78,17 +116,27 @@ namespace PlantsVsZombies
                 case "S":
                 case "SUNFLOWER":
                   npc= Factoria.CreateNPC("Girasol",turno, x, y, _soles);
-                    Tablero.Add(npc);
+                    if (npc != null)
+                    { 
+                        Tablero.Add(npc);
+                   
 
+                        _soles -= npc.Coste;
+                    }
                     break;
                 case "P":
                 case "PEASHOOTER":
                     npc = Factoria.CreateNPC("Planta", turno, x, y, _soles);
-                    Tablero.Add(npc);
-                  
+                    if(npc!=null)
+                    {
+                        Tablero.Add(npc);
+                        _soles -= npc.Coste;
+
+                    }
+
                     break;
                 default:
-                    var rand = new Random();
+                    Random rand = new Random(Guid.NewGuid().GetHashCode());
 
                     var porcentaje = rand.Next(1, 100);
                     if(porcentaje<= _refresco*100 )

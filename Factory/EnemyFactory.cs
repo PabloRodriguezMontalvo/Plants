@@ -21,12 +21,12 @@ namespace PlantsVsZombies.Factory
             }
             else if (Tipo == "Planta")
             {
-                Cosa = new Planta(turno, 1, 0, 2, 0, x, y);
+                Cosa = new Planta(turno, 1, 0, 1, 1, x, y);
 
             }
             else
             {
-                Cosa = new Zombie(turno, 1, 1, 2, 1, x, y);
+                Cosa = new Zombie(turno, 2, 1, 2, 1, x, y);
 
             }
             if (Cosa.Coste > soles && Cosa.Tipo!="Zombie")

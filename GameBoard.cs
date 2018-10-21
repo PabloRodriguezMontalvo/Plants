@@ -25,6 +25,10 @@ namespace PlantsVsZombies
             _refresco = refresco;
             countDeaths = dificultad;
     }
+        public bool PosicionOcupada(int LaX, int LaY)
+        {
+            return Tablero.Any(o => o.X == (LaX) && o.Y == (LaY));
+        }
         public int AcumularSol()
         {
             foreach (var item in Tablero.Where(o => o.Tipo == "Girasol"))
@@ -111,8 +115,7 @@ namespace PlantsVsZombies
         {
             turno++;
         }
-        public List<INPC> GetTablero()
-        { return Tablero; }
+       
         public void GenerarNPC(string planta, int x, int y)
         {
             INPC npc;

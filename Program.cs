@@ -51,7 +51,11 @@ namespace PlantsVsZombies
                     string LaPlanta = accion.Split('<', '>')[1];
                     string LaX = accion.Split('<', '>')[3];
                     string LaY = accion.Split('<', '>')[5];
-                    var posicionOcupada = Juego.GetTablero().Any(o => o.X == int.Parse(LaX) && o.Y == int.Parse(LaY));
+                    int X = 0;
+                    int Y = 0;
+                    if(int.TryParse(LaX, out X) && int.TryParse(LaY, out Y))
+                     { 
+                    var posicionOcupada = Juego.PosicionOcupada(X, Y);
                     if (posicionOcupada == false)
                     {
                         Juego.GenerarNPC(LaPlanta, int.Parse(LaX), int.Parse(LaY));
@@ -62,6 +66,14 @@ namespace PlantsVsZombies
                     {
                         AccionCorrecta = false;
                         Console.WriteLine("Posición ocupada");
+                    }
+                    }
+                    else
+                    {
+                        AccionCorrecta = false;
+
+                        Console.WriteLine("Las coordenadas son incorrectas");
+
                     }
                 }
                 else if (accion.StartsWith("LIST"))

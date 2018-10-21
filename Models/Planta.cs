@@ -50,14 +50,7 @@ namespace PlantsVsZombies.Models
         }
 
       
-        public bool RecibirDaño(int daño)
-        {
-            Vida -= daño;
-            if (Vida > 0)
-                return false;
-            else
-                return true;
-        }
+        
     }
 
 

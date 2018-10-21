@@ -10,8 +10,6 @@ namespace PlantsVsZombies.Factory
    public class EnemyFactory
     {
 
- 
-       
         public INPC CreateNPC(string Tipo, int turno, int x, int y, int soles)
         {
             INPC Cosa = new Girasol(turno, 1, 0, 2, 0, x, y); ;

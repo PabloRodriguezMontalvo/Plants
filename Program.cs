@@ -39,7 +39,7 @@ namespace PlantsVsZombies
             {
                 Console.WriteLine("Qué nivel quieres jugar? -1. Facil, 2. Normal, 3.Dificil-");
             }
-            while (Juego.Fin()==false)
+            while (Juego.Fin()!=0)
             {
                 var AccionCorrecta = true;
                 var accion = UserComand().ToUpper();

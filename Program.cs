@@ -20,6 +20,7 @@ namespace PlantsVsZombies
 
             Console.WriteLine("Qué nivel quieres jugar? (1. Facil, 2. Normal, 3.Dificil)");
             var respuesta= Console.ReadLine();
+            //Aquí metemos la frecuencia de spawn y los enemigos a eliminar para ganar la partida
             if (respuesta == "1")
             {
               Juego= new GameBoard(3, .1f);
@@ -42,6 +43,7 @@ namespace PlantsVsZombies
             {
                 var AccionCorrecta = true;
                 var accion = UserComand().ToUpper();
+                //Esto se podría mejorar
                 if (accion.StartsWith("ADD"))
                 {
 
@@ -74,6 +76,8 @@ namespace PlantsVsZombies
                 }
                 else if (string.IsNullOrWhiteSpace(accion))
                 { }
+
+                // No he puesto las demás acciones pero son triviales de hacer
                 else
                 {
                     AccionCorrecta = false;
@@ -82,16 +86,20 @@ namespace PlantsVsZombies
                 { 
                 Update(Juego);
                 Draw(Juego);
-                    if (Juego.Fin())
+                    var HaTerminado = Juego.Fin();
+                    if (HaTerminado!=0)
                     {
-                        GameOver();
+                        GameOver(HaTerminado);
                     }
                     else
                     Juego.SiguienteTurno();
                 }
             }
         }
-
+        /// <summary>
+        /// Esto es la función que actualiza el juego entre turnos
+        /// </summary>
+        /// <param name="Juego"></param>
         public static void Update(GameBoard Juego)
         {
           var soles=  Juego.AcumularSol();
@@ -103,7 +111,10 @@ namespace PlantsVsZombies
             Juego.MoverEnemigos();
 
         }
-
+        /// <summary>
+        /// Esto es para pintar el tablero
+        /// </summary>
+        /// <param name="Juego"></param>
         public static void Draw(GameBoard Juego)
         {
             var tablero = Juego.Tablero;
@@ -161,9 +172,13 @@ namespace PlantsVsZombies
             return Console.ReadLine();
 
         }
-        public static string GameOver()
+        public static string GameOver(int WinOrLose)
         {
+            if(WinOrLose==1)
             Console.WriteLine("Has ganado");
+            else
+                Console.WriteLine("Has perdido");
+
             return Console.ReadLine();
 
         }

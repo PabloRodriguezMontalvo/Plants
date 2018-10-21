@@ -79,12 +79,15 @@ namespace PlantsVsZombies
                     else
                         PlantasFueraDelTablero= AtaqueEnemigo(item, planta);
                 }
-             
+                // un zombie ha llegado al final, has perdido
+                if (item.X == 0)
+                    alive = false;
             }
             foreach (var item in PlantasFueraDelTablero)
             {
                 Tablero.Remove(item);
             }
+           
         }
         public List<INPC> AtaqueEnemigo(INPC Enemy,INPC Planta)
         {
@@ -96,11 +99,13 @@ namespace PlantsVsZombies
             }
             return PlantasFueraDelTablero;
         }
-            public bool Fin()
+            public int Fin()
         {
-            if (countDeaths == 0 || alive == false)
-                return true;
-            else return false;
+            if (countDeaths == 0)
+                return 1;
+            else if (alive == false)
+                return 2;
+            else return 0;
         }
         public void SiguienteTurno()
         {

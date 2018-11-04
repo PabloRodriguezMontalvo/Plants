@@ -15,7 +15,7 @@ namespace PlantsVsZombies
 
         static void  Main(string[] args)
         {
-
+            // Gameboard contiene las reglas del juego
             GameBoard Juego = new GameBoard(3, .1f);
 
             Console.WriteLine("Qué nivel quieres jugar? (1. Facil, 2. Normal, 3.Dificil)");
@@ -51,22 +51,20 @@ namespace PlantsVsZombies
                     string LaPlanta = accion.Split('<', '>')[1];
                     string LaX = accion.Split('<', '>')[3];
                     string LaY = accion.Split('<', '>')[5];
-                    int X = 0;
-                    int Y = 0;
-                    if(int.TryParse(LaX, out X) && int.TryParse(LaY, out Y))
-                     { 
-                    var posicionOcupada = Juego.PosicionOcupada(X, Y);
-                    if (posicionOcupada == false)
+                    if (int.TryParse(LaX, out int X) && int.TryParse(LaY, out int Y))
                     {
-                        Juego.GenerarNPC(LaPlanta, int.Parse(LaX), int.Parse(LaY));
+                        var posicionOcupada = Juego.PosicionOcupada(X, Y);
+                        if (posicionOcupada == false)
+                        {
+                            Juego.GenerarNPC(LaPlanta, int.Parse(LaX), int.Parse(LaY));
 
 
-                    }
-                    else
-                    {
-                        AccionCorrecta = false;
-                        Console.WriteLine("Posición ocupada");
-                    }
+                        }
+                        else
+                        {
+                            AccionCorrecta = false;
+                            Console.WriteLine("Posición ocupada");
+                        }
                     }
                     else
                     {
